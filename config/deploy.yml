@@ -1,0 +1,25 @@
+service: micronautfun
+image: axqonzxzrddy/micronautfun
+ssh:
+  user: ubuntu
+servers:
+  web:
+    - 158.179.212.125
+proxy:
+  ssl: true
+  host: micronaut.fun
+  healthcheck:
+    path: /health
+  app_port: 8080
+registry:
+  username: axqonzxzrddy/sergio.delamo@softamo.com
+  server: ocir.eu-madrid-1.oci.oraclecloud.com
+  password:
+    - OCI_AUTH_TOKEN
+builder:
+  context: build/docker/main
+  dockerfile: build/docker/main/Dockerfile
+  arch: arm64
+env:
+  clear:
+    MICRONAUT_ENVIRONMENTS: kamal
