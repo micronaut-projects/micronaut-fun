@@ -7,7 +7,7 @@ import jakarta.inject.Singleton;
 @Singleton
 class Prompts {
 
-    @Prompt(name = "introspection-testing", title = "Introspection Testing", description = "Test whether a class is introspected in a Micronaut application")
+    @Prompt(name = "introspection-testing", title = "Introspection-Testing", description = "Test whether a class is introspected in a Micronaut application")
     String introspectionTesting(@PromptArg(description = "The class for which you want to test introspection") String className) {
         return String.format("""
     Please, write a test to verify introspection for %s
