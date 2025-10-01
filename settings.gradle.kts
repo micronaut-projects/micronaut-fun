@@ -1,4 +1,2 @@
-
-
 rootProject.name="micronaut-fun"
 

@@ -1,0 +1,33 @@
+package io.micronaut.documentation.search.mcp;
+
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.documentation.search.DocumentSearchService;
+import io.micronaut.documentation.search.SearchResult;
+import io.micronaut.mcp.server.tools.fetch.FetchRequest;
+import io.micronaut.mcp.server.tools.fetch.FetchResponse;
+import io.micronaut.mcp.server.tools.fetch.FetchTool;
+import io.modelcontextprotocol.common.McpTransportContext;
+import jakarta.inject.Singleton;
+
+import java.util.Optional;
+
+@Singleton
+class MicronautDocumentationFetchTool implements FetchTool {
+    private final DocumentSearchService searchService;
+
+    public MicronautDocumentationFetchTool(DocumentSearchService searchService) {
+        this.searchService = searchService;
+    }
+
+    @Override
+    public @NonNull Optional<FetchResponse> fetch(@NonNull FetchRequest request, @Nullable McpTransportContext mcpTransportContext) {
+        return searchService.findById(request.id())
+                .map(searchResult -> new FetchResponse(
+                        searchResult.id(),
+                        searchResult.title(),
+                        searchResult.content(),
+                        searchResult.link(),
+                        null));
+    }
+}

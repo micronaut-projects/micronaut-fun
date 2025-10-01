@@ -1,11 +1,10 @@
 plugins {
     id("io.micronaut.application") version "4.5.4"
-    id("com.gradleup.shadow") version "8.3.7"
-    id("io.micronaut.aot") version "4.5.4"
+    id("com.gradleup.shadow") version "8.3.9"
 }
 
 version = "0.1"
-group = "micronaut.fun"
+group = "micronaut.documentation.search"
 
 repositories {
     mavenCentral()
@@ -13,8 +12,19 @@ repositories {
 
 dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
+    implementation("io.micronaut.opensearch:micronaut-opensearch-httpclient5")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.views:micronaut-views-thymeleaf")
+    implementation("io.micronaut.opensearch:micronaut-opensearch")
+    implementation("org.apache.httpcomponents.client5:httpclient5")
+    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-management")
+    // HTML -> Markdown converter
+    implementation("com.vladsch.flexmark:flexmark-html2md-converter:0.64.8")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.8")
+    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.8")
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client")
@@ -22,7 +32,7 @@ dependencies {
 
 
 application {
-    mainClass = "micronaut.fun.Application"
+    mainClass = "io.micronaut.documentation.search.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
@@ -37,19 +47,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("micronaut.fun.*")
-    }
-    aot {
-        // Please review carefully the optimizations enabled below
-        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
-        optimizeServiceLoading = false
-        convertYamlToJava = false
-        precomputeOperations = true
-        cacheEnvironment = true
-        optimizeClassLoading = true
-        deduceEnvironment = true
-        optimizeNetty = true
-        replaceLogbackXml = true
+        annotations("micronaut.documentation.search.*")
     }
 }
 
@@ -57,5 +55,3 @@ micronaut {
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
     jdkVersion = "21"
 }
-
-

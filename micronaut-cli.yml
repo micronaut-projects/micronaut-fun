@@ -1,5 +1,5 @@
 applicationType: default
-defaultPackage: micronaut.fun
+defaultPackage: micronaut.documentation.search
 testFramework: junit
 sourceLanguage: java
 buildTool: gradle_kotlin

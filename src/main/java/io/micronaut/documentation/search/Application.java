@@ -1,4 +1,4 @@
-package micronaut.fun;
+package io.micronaut.documentation.search;
 
 import io.micronaut.runtime.Micronaut;
 

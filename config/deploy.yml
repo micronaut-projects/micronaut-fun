@@ -23,3 +23,17 @@ builder:
 env:
   clear:
     MICRONAUT_ENVIRONMENTS: kamal
+accessories:
+  opensearch:
+    image: opensearchproject/opensearch:2.19.3
+    roles:
+      - web
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    port: 9200
+    env:
+      clear:
+        "plugins.security.disabled": true
+        discovery.type: single-node
+      secret:
+        - OPENSEARCH_INITIAL_ADMIN_PASSWORD
