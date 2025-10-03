@@ -2,8 +2,7 @@ package io.micronaut.documentation.search.mcp;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.documentation.search.DocumentSearchService;
-import io.micronaut.documentation.search.SearchResult;
+import io.micronaut.documentation.search.SearchService;
 import io.micronaut.mcp.server.tools.fetch.FetchRequest;
 import io.micronaut.mcp.server.tools.fetch.FetchResponse;
 import io.micronaut.mcp.server.tools.fetch.FetchTool;
@@ -14,9 +13,9 @@ import java.util.Optional;
 
 @Singleton
 class MicronautDocumentationFetchTool implements FetchTool {
-    private final DocumentSearchService searchService;
+    private final SearchService searchService;
 
-    public MicronautDocumentationFetchTool(DocumentSearchService searchService) {
+    public MicronautDocumentationFetchTool(SearchService searchService) {
         this.searchService = searchService;
     }
 

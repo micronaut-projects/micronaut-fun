@@ -2,7 +2,7 @@ package io.micronaut.documentation.search.mcp;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.documentation.search.DocumentSearchService;
+import io.micronaut.documentation.search.SearchService;
 import io.micronaut.mcp.server.tools.search.SearchRequest;
 import io.micronaut.mcp.server.tools.search.SearchResponse;
 import io.micronaut.mcp.server.tools.search.SearchTool;
@@ -11,9 +11,9 @@ import jakarta.inject.Singleton;
 
 @Singleton
 public class MicronautDocumentationSearchTool implements SearchTool {
-    private final DocumentSearchService searchService;
+    private final SearchService searchService;
 
-    public MicronautDocumentationSearchTool(DocumentSearchService searchService) {
+    public MicronautDocumentationSearchTool(SearchService searchService) {
         this.searchService = searchService;
     }
 

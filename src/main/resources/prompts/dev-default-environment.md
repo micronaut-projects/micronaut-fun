@@ -1,3 +1,24 @@
+To configure a Micronaut application to define the `dev` environment as the default environment when running 
+the application locally you need to modify the `main`. 
+
+You may need to do replace such a main class: 
+
+```
+package example.micronaut;
+
+import io.micronaut.runtime.Micronaut;
+
+public class Application {
+
+    public static void main(String[] args) {
+        Micronaut.run(Application.class, args);
+    }
+}
+```
+
+with:
+
+```java
 package io.micronaut.documentation.search;
 
 import io.micronaut.context.ApplicationContextBuilder;
@@ -20,3 +41,6 @@ public class Application {
         Micronaut.run(Application.class, args);
     }
 }
+```
+
+Modify the current `main` class to configure the dev environment as the default when running locally.

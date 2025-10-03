@@ -1,4 +1,4 @@
-package io.micronaut.documentation.search;
+package io.micronaut.documentation.search.opensearch;
 
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.runtime.event.ApplicationStartupEvent;

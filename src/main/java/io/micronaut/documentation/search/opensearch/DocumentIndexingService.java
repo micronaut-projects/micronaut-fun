@@ -1,7 +1,11 @@
-package io.micronaut.documentation.search;
+package io.micronaut.documentation.search.opensearch;
 
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.serde.ObjectMapper;
+import io.micronaut.documentation.search.CoreDocsClient;
+import io.micronaut.documentation.search.IndexedDocument;
+import io.micronaut.documentation.search.MarkdownConversion;
+import io.micronaut.documentation.search.MicronautModule;
+import io.micronaut.documentation.search.MicronautProjectsGithubClient;
 import jakarta.inject.Singleton;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;

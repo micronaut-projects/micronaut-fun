@@ -1,8 +1,9 @@
-package io.micronaut.documentation.search;
+package io.micronaut.documentation.search.opensearch;
 
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.serde.ObjectMapper;
+import io.micronaut.documentation.search.SearchResult;
+import io.micronaut.documentation.search.SearchService;
 import jakarta.inject.Singleton;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.query_dsl.MultiMatchQuery;
@@ -21,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Singleton
-public class DocumentSearchService {
+public class DocumentSearchService implements SearchService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentSearchService.class);
     private static final String INDEX_NAME = "micronaut-docs";
@@ -32,6 +33,7 @@ public class DocumentSearchService {
         this.openSearchClient = openSearchClient;
     }
 
+    @Override
     public List<SearchResult> search(String query) {
         return search(query, 10);
     }

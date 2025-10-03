@@ -17,9 +17,9 @@ public class SearchController {
     public static final String MODEL_KEY_HAS_RESULTS = "hasResults";
     public static final String MODEL_KEY_RESULTS = "results";
     public static final String MODEL_KEY_QUERY = "query";
-    private final DocumentSearchService searchService;
+    private final SearchService searchService;
 
-    public SearchController(DocumentSearchService searchService) {
+    public SearchController(SearchService searchService) {
         this.searchService = searchService;
     }
 
