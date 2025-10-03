@@ -34,7 +34,7 @@ class PromptsTest {
         //assertEquals(McpSchema.Role.USER, promptMessage.role());
         assertInstanceOf(McpSchema.TextContent.class, promptMessage.content());
         assertEquals("""
-Please, write a test to verify introspection for SearchResult
+Please, write a test to verify introspection for SearchResult.
 
 The following tests shows how to test if a class is introspected. The following test verifies if the `CreateGame` class is annotated with `@Introspected`.
 
@@ -43,7 +43,6 @@ The following tests shows how to test if a class is introspected. The following 
 void isAnnotatedWithIntrospected() {
     assertDoesNotThrow(() -> BeanIntrospection.getIntrospection(CreateGame.class));
 }
-```
-""", ((McpSchema.TextContent) promptMessage.content()).text());
+```""", ((McpSchema.TextContent) promptMessage.content()).text());
     }
 }

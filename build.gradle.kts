@@ -23,8 +23,8 @@ dependencies {
     implementation("io.micronaut:micronaut-management")
     // HTML -> Markdown converter
     implementation("com.vladsch.flexmark:flexmark-html2md-converter:0.64.8")
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.8")
-    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.8")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.9")
+    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.9")
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client")

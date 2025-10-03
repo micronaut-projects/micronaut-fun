@@ -7,3 +7,4 @@ The following tests shows how to test if a class is introspected. The following 
 void isAnnotatedWithIntrospected() {
     assertDoesNotThrow(() -> BeanIntrospection.getIntrospection(CreateGame.class));
 }
+```
