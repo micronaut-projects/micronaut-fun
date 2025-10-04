@@ -4,7 +4,7 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.documentation.search.docs.CoreDocsClient;
 import io.micronaut.documentation.search.IndexedDocument;
 import io.micronaut.documentation.search.MarkdownConversion;
-import io.micronaut.documentation.search.MicronautModule;
+import io.micronaut.documentation.search.modules.MicronautModule;
 import io.micronaut.documentation.search.docs.MicronautProjectsGithubClient;
 import jakarta.inject.Singleton;
 import org.jsoup.Jsoup;

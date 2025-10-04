@@ -2,7 +2,7 @@ package io.micronaut.documentation.search.mcp;
 
 import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.documentation.search.MicronautModule;
+import io.micronaut.documentation.search.modules.MicronautModule;
 import io.micronaut.documentation.search.docs.CoreDocsClient;
 import io.micronaut.documentation.search.docs.MicronautProjectsGithubClient;
 import io.micronaut.http.MediaType;

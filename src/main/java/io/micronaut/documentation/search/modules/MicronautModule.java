@@ -1,10 +1,12 @@
-package io.micronaut.documentation.search;
+package io.micronaut.documentation.search.modules;
 
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.naming.Named;
 
 @EachProperty("modules")
+@Introspected
 public class MicronautModule implements Named {
 
     private final String name;

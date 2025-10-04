@@ -14,4 +14,9 @@ class StaticResourceTest {
     void guidesJsonSchemaExists(@Client("/") HttpClient client) {
         assertDoesNotThrow(() -> client.toBlocking().retrieve("/schemas/guide.schema.json"));
     }
+
+    @Test
+    void modulesJsonSchemaExists(@Client("/") HttpClient client) {
+        assertDoesNotThrow(() -> client.toBlocking().retrieve("/schemas/modules.schema.json"));
+    }
 }
