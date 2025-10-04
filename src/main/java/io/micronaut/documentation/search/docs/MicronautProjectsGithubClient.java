@@ -1,4 +1,4 @@
-package io.micronaut.documentation.search;
+package io.micronaut.documentation.search.docs;
 
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Consumes;
@@ -6,7 +6,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.client.annotation.Client;
 
-@Client("https://micronaut-projects.github.io")
+@Client(id = "micronautprojects")
 public interface MicronautProjectsGithubClient {
 
     @Consumes(MediaType.TEXT_HTML)

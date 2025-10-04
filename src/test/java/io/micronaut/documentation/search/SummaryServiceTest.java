@@ -1,5 +1,6 @@
 package io.micronaut.documentation.search;
 
+import io.micronaut.documentation.search.docs.MicronautProjectsGithubClient;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 
