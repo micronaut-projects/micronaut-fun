@@ -19,9 +19,11 @@ public interface GuidesFetcher {
     @NonNull
     List<String> findSlugBySlugStartingWith(@NonNull String slug);
 
+    @NonNull
+    List<String> findSlugBySlugContains(@NonNull String slug);
 
     @NonNull
-    Optional<String> findBySlugBuildLang(String slugBuildLang);
+    Optional<String> findBySlugAndBuildAndLanguage(@NonNull String slug, @NonNull BuildTool build, @NonNull Language language);
 
     @NonNull
     List<String> findSlugBuildLangBySlugStartingWith(@NonNull String slugBuildLang);

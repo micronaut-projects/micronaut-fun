@@ -1,44 +1,114 @@
 package io.micronaut.documentation.search.mcp;
 
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.documentation.search.guides.BuildTool;
+import io.micronaut.documentation.search.guides.Guide;
 import io.micronaut.documentation.search.guides.GuidesFetcher;
+import io.micronaut.documentation.search.guides.Language;
 import io.micronaut.mcp.annotations.ResourceCompletion;
+import io.modelcontextprotocol.spec.McpSchema;
 import jakarta.inject.Singleton;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Singleton
 class MicronautGuidesCompletions {
     public static final int MAX = 100;
     private final GuidesFetcher guidesFetcher;
-    private final List<String> empty = List.of(" ");
+    private static final McpSchema.CompleteResult EMPTY = new McpSchema.CompleteResult(
+            new McpSchema.CompleteResult.CompleteCompletion(List.of(" "), 0, false));
 
     MicronautGuidesCompletions(GuidesFetcher guidesFetcher) {
         this.guidesFetcher = guidesFetcher;
     }
 
     @ResourceCompletion(uri = "guidemetadata://{slug}")
-    List<String> completeGuideSlug(String slug) {
+    McpSchema.CompleteResult completeGuideSlug(String slug) {
         if (StringUtils.isEmpty(slug)) {
-            return empty;
+            return EMPTY;
         }
-        List<String> slugs = guidesFetcher.findSlugBySlugStartingWith(slug);
-        if (slugs.size() > MAX) {
-            return slugs.subList(0, MAX);
-        }
-        return slugs;
+        return new McpSchema.CompleteResult(completeSlug(slug));
     }
 
-    @ResourceCompletion(uri = "guidehtml://{slugBuildLang}")
-    List<String> completeGuideHtmlSlug(String slugBuildLang) {
-        if (StringUtils.isEmpty(slugBuildLang)) {
-            return empty;
+    private McpSchema.CompleteResult.CompleteCompletion completeSlug(String slug) {
+        List<String> slugs = guidesFetcher.findSlugBySlugStartingWith(slug);
+        if (slugs.size() < MAX) {
+            slugs = new ArrayList<>(slugs);
+            slugs.addAll(guidesFetcher.findSlugBySlugContains(slug));
         }
-        List<String> slugs = guidesFetcher.findSlugBuildLangBySlugStartingWith(slugBuildLang);
         if (slugs.size() > MAX) {
-            return slugs.subList(0, MAX);
+            return new McpSchema.CompleteResult.CompleteCompletion(slugs.subList(0, MAX), slugs.size(), true);
         }
-        return slugs;
+        return new McpSchema.CompleteResult.CompleteCompletion(slugs, 0, false);
+    }
+
+    @ResourceCompletion(uri = "guidehtml://{slug}/{buildTool}/{language}")
+    McpSchema.CompleteResult completeGuideHtmlSlug(McpSchema.CompleteRequest completeRequest) {
+        if (completeRequest.argument() == null) {
+            return EMPTY;
+        }
+        if (completeRequest.argument().name().equals("slug")) {
+            return new McpSchema.CompleteResult(completeSlug(completeRequest.argument().value()));
+        }
+        if (completeRequest.argument().name().equals("buildTool")) {
+            return completeCompletion(findBuildToolsForSlug(completeRequest));
+        }
+        if (completeRequest.argument().name().equals("language")) {
+            return completeCompletion(findLanguagesForSlug(completeRequest));
+        }
+        return EMPTY;
+    }
+
+    private List<String> findLanguagesForSlug(McpSchema.CompleteRequest completeRequest) {
+        Optional<Guide> guideOptional = guide(completeRequest);
+        if (guideOptional.isPresent()) {
+            Guide guide = guideOptional.get();
+            return completionsForLanguages(guide.languages());
+        }
+        return completions(Language.values());
+    }
+
+    private List<String> findBuildToolsForSlug(McpSchema.CompleteRequest completeRequest) {
+        Optional<Guide> guideOptional = guide(completeRequest);
+        if (guideOptional.isPresent()) {
+            Guide guide = guideOptional.get();
+            return completions(guide.buildTools());
+        }
+        return completions(List.of(BuildTool.GRADLE, BuildTool.MAVEN));
+    }
+
+    private Optional<Guide> guide(McpSchema.CompleteRequest completeRequest) {
+        Optional<String> slugOptional = slug(completeRequest);
+        if (slugOptional.isPresent()) {
+            return guidesFetcher.findBySlug(slugOptional.get());
+        }
+        return Optional.empty();
+    }
+
+    private Optional<String> slug(McpSchema.CompleteRequest completeRequest) {
+        if (completeRequest.context() != null && completeRequest.context().arguments() != null) {
+            String slug = completeRequest.context().arguments().get("slug");
+            if (StringUtils.isNotEmpty(slug)) {
+                return Optional.of(slug);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private List<String> completions(List<BuildTool> buildTools) {
+        return buildTools.stream().map(BuildTool::name).toList();
+    }
+
+    private List<String> completionsForLanguages(List<Language> buildTools) {
+        return buildTools.stream().map(Language::name).toList();
+    }
+
+    private List<String> completions(Language[] values) {
+        return Stream.of(values).map(Language::name).toList();
+    }
+
+    private McpSchema.CompleteResult completeCompletion(List<String> values) {
+        return new McpSchema.CompleteResult(new McpSchema.CompleteResult.CompleteCompletion(values, values.size(), false));
     }
 }

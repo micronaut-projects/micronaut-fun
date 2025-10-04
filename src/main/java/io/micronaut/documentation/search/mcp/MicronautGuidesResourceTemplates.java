@@ -32,18 +32,20 @@ class MicronautGuidesResourceTemplates {
                     MediaType.APPLICATION_JSON,
                     json.get())));
         }
-        throw new McpError(new McpSchema.JSONRPCResponse.JSONRPCError(McpSchema.ErrorCodes.RESOURCE_NOT_FOUND, "guide not found wiht slug " + slug, null));
+        throw new McpError(new McpSchema.JSONRPCResponse.JSONRPCError(McpSchema.ErrorCodes.RESOURCE_NOT_FOUND, "guide not found with slug " + slug, null));
     }
 
-    @ResourceTemplate(uriTemplate = "guidehtml://{slugBuildLang}",
+    @ResourceTemplate(uriTemplate = "guidehtml://{slug}/{buildTool}/{language}",
             mimeType = MediaType.TEXT_HTML,
             title = "Micronaut Guide",
             description = "returns a Guide HTML Page")
-    String guideHtml(String slugBuildLang) {
-        Optional<String> html = guidesFetcher.findBySlugBuildLang(slugBuildLang);
+    String guideHtml(String slug, String buildTool, String language) {
+        Optional<String> html = guidesFetcher.findBySlugAndBuildAndLanguage(slug,
+                BuildTool.valueOf(buildTool),
+                Language.valueOf(language));
         if (html.isPresent()) {
             return html.get();
         }
-        throw new McpError(new McpSchema.JSONRPCResponse.JSONRPCError(McpSchema.ErrorCodes.RESOURCE_NOT_FOUND, "guide not found with slug " + slugBuildLang, null));
+        throw new McpError(new McpSchema.JSONRPCResponse.JSONRPCError(McpSchema.ErrorCodes.RESOURCE_NOT_FOUND, "guide not found with slug " + slug, null));
     }
 }

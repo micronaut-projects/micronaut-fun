@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Singleton
-@CacheConfig("guides")
+@CacheConfig
 class DefaultGuidesFetcher implements GuidesFetcher {
     public static final List<String> BUILD_TOOL_OPTIONS = List.of("maven", "gradle");
     public static final List<String> LANGUAGES_OPTIONS = List.of("java", "groovy", "kotlin");
@@ -25,21 +25,21 @@ class DefaultGuidesFetcher implements GuidesFetcher {
         this.jsonMapper = jsonMapper;
     }
 
-    @CachePut(parameters = {"slug"})
+    @Cacheable(parameters = {"slug"}, cacheNames = "guidesFindBySlug")
     @Override
     @NonNull
     public Optional<Guide> findBySlug(@NonNull String slug) {
         return findAll().stream().filter(guide -> guide.slug().equals(slug)).findFirst();
     }
 
-    @Cacheable
+    @Cacheable(cacheNames = "guidesFindAll")
     @Override
     @NonNull
     public List<Guide> findAll() {
         return guidesHttpClient.guides();
     }
 
-    @CachePut(parameters = {"slug"})
+    @Cacheable(parameters = {"slug"}, cacheNames = "guidesFindGuideSerialized")
     @Override
     @NonNull
     public Optional<String> findGuideSerialized(@NonNull String slug) {
@@ -55,24 +55,33 @@ class DefaultGuidesFetcher implements GuidesFetcher {
         return Optional.empty();
     }
 
-    @Cacheable
+    @Cacheable(cacheNames = "guidesFindSlug")
     List<String> findSlug() {
         return findAll().stream().map(Guide::slug).toList();
     }
 
-    @CachePut(parameters = {"slug"})
+    @Cacheable(parameters = {"slug"}, cacheNames = "guidesfindSlugBySlugStartingWith")
     @Override
-    public List<String> findSlugBySlugStartingWith(String slug) {
-        return findSlug().stream().filter(s -> s.startsWith(slug) || s.contains(slug)).toList();
+    @NonNull
+    public List<String> findSlugBySlugStartingWith(@NonNull String slug) {
+        return findSlug().stream().filter(s -> s.startsWith(slug)).toList();
     }
 
-    @CachePut(parameters = {"slugBuildLang"})
+    @Cacheable(parameters = {"slug"}, cacheNames = "guidesfindSlugBySlugContains")
+    @Override
     @NonNull
-    public Optional<String> findBySlugBuildLang(String slugBuildLang) {
+    public List<String> findSlugBySlugContains(@NonNull String slug) {
+        return findSlug().stream().filter(s -> s.contains(slug)).toList();
+    }
+
+    @Cacheable(parameters = {"slug", "buildTool", "language"}, cacheNames = "guidesFindBySlugAndBuildAndLanguage")
+    @NonNull
+    public Optional<String> findBySlugAndBuildAndLanguage(@NonNull String slug, @NonNull BuildTool buildTool, @NonNull Language language) {
+        String slugBuildLang = String.join("-", slug, buildTool.name().toLowerCase(), language.name().toLowerCase());
         return guidesHttpClient.findGuideHtml(slugBuildLang);
     }
 
-    @CachePut(parameters = {"slugBuildLang"})
+    @Cacheable(parameters = {"slugBuildLang"}, cacheNames = "guidesFindSlugBuildLangBySlugStartingWith")
     @Override
     @NonNull
     public List<String> findSlugBuildLangBySlugStartingWith(@NonNull String slugBuildLang) {
