@@ -9,9 +9,11 @@ import java.util.Optional;
 public interface GuidesFetcher {
     Optional<Guide> findBySlug(String slug);
 
-    @Cacheable
     @NonNull
     List<Guide> findAll();
+
+    @NonNull
+    Guides findGuides();
 
     @NonNull
     Optional<String> findGuideSerialized(@NonNull String slug);

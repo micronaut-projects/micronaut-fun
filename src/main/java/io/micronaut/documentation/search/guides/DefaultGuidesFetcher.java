@@ -19,10 +19,21 @@ class DefaultGuidesFetcher implements GuidesFetcher {
     public static final List<String> LANGUAGES_OPTIONS = List.of("java", "groovy", "kotlin");
     private final GuidesHttpClient guidesHttpClient;
     private final JsonMapper jsonMapper;
+    private final GuideMapper guideMapper;
 
-    public DefaultGuidesFetcher(GuidesHttpClient guidesHttpClient, JsonMapper jsonMapper) {
+    public DefaultGuidesFetcher(GuidesHttpClient guidesHttpClient,
+                                JsonMapper jsonMapper,
+                                GuideMapper guideMapper) {
         this.guidesHttpClient = guidesHttpClient;
         this.jsonMapper = jsonMapper;
+        this.guideMapper = guideMapper;
+    }
+
+    @Cacheable(cacheNames = "findGuides")
+    @Override
+    @NonNull
+    public Guides findGuides() {
+        return new Guides(findAll().stream().map(guideMapper::map).toList());
     }
 
     @Cacheable(parameters = {"slug"}, cacheNames = "guidesFindBySlug")
