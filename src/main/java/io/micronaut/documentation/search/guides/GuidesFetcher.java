@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GuidesFetcher {
-    Optional<Guide> findById(String slug);
+    Optional<Guide> findBySlug(String slug);
 
     @Cacheable
     @NonNull

@@ -12,6 +12,7 @@ import java.util.List;
 class MicronautGuidesCompletions {
     public static final int MAX = 100;
     private final GuidesFetcher guidesFetcher;
+    private final List<String> empty = List.of(" ");
 
     MicronautGuidesCompletions(GuidesFetcher guidesFetcher) {
         this.guidesFetcher = guidesFetcher;
@@ -20,7 +21,7 @@ class MicronautGuidesCompletions {
     @ResourceCompletion(uri = "guidemetadata://{slug}")
     List<String> completeGuideSlug(String slug) {
         if (StringUtils.isEmpty(slug)) {
-            return Collections.emptyList();
+            return empty;
         }
         List<String> slugs = guidesFetcher.findSlugBySlugStartingWith(slug);
         if (slugs.size() > MAX) {
@@ -32,7 +33,7 @@ class MicronautGuidesCompletions {
     @ResourceCompletion(uri = "guidehtml://{slugBuildLang}")
     List<String> completeGuideHtmlSlug(String slugBuildLang) {
         if (StringUtils.isEmpty(slugBuildLang)) {
-            return Collections.emptyList();
+            return empty;
         }
         List<String> slugs = guidesFetcher.findSlugBuildLangBySlugStartingWith(slugBuildLang);
         if (slugs.size() > MAX) {

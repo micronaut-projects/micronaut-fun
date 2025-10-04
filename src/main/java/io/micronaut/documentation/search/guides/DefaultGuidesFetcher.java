@@ -3,7 +3,6 @@ package io.micronaut.documentation.search.guides;
 import io.micronaut.cache.annotation.CacheConfig;
 import io.micronaut.cache.annotation.CachePut;
 import io.micronaut.cache.annotation.Cacheable;
-import io.micronaut.cache.annotation.CachePut;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.json.JsonMapper;
 import jakarta.inject.Singleton;
@@ -29,7 +28,7 @@ class DefaultGuidesFetcher implements GuidesFetcher {
     @CachePut(parameters = {"slug"})
     @Override
     @NonNull
-    public Optional<Guide> findById(@NonNull String slug) {
+    public Optional<Guide> findBySlug(@NonNull String slug) {
         return findAll().stream().filter(guide -> guide.slug().equals(slug)).findFirst();
     }
 
@@ -44,7 +43,7 @@ class DefaultGuidesFetcher implements GuidesFetcher {
     @Override
     @NonNull
     public Optional<String> findGuideSerialized(@NonNull String slug) {
-        Optional<Guide> guideOptional = findById(slug);
+        Optional<Guide> guideOptional = findBySlug(slug);
         if (guideOptional.isPresent()) {
             try {
                 Guide guide = guideOptional.get();
