@@ -26,7 +26,7 @@ class ConfigurationReferenceFactory {
     McpStatelessServerFeatures.SyncResourceSpecification configurationReferenceResourceSpecification(MicronautModule micronautModule) {
         return new McpStatelessServerFeatures.SyncResourceSpecification(configurationReferenceResource(micronautModule),
                 (mcpTransportContext, readResourceRequest) ->
-                        configurationReferenceReadResourceResult(micronautModule.getSlug(), micronautProjectsGithubClient::configurationReference));
+                        configurationReferenceReadResourceResult(micronautModule.getSlug(), micronautProjectsGithubClient::snapshotConfigurationReference));
     }
 
     @Singleton

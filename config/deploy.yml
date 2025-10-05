@@ -22,7 +22,7 @@ builder:
   arch: arm64
 env:
   clear:
-    MICRONAUT_ENVIRONMENTS: kamal
+    MICRONAUT_ENVIRONMENTS: production
 accessories:
   opensearch:
     image: opensearchproject/opensearch:2.19.3

@@ -14,7 +14,7 @@ class MicronautProjectsGithubClientTest {
         String html = assertDoesNotThrow(() -> client.latest("micronaut-test"));
         assertNotNull(html);
         assertTrue(html.contains("<title>Micronaut Test</title>"));
-        html = assertDoesNotThrow(() -> client.configurationReference("micronaut-test"));
+        html = assertDoesNotThrow(() -> client.snapshotConfigurationReference("micronaut-test"));
         assertNotNull(html);
         assertTrue(html.contains("<title>Configuration Reference | Micronaut</title>"));
     }

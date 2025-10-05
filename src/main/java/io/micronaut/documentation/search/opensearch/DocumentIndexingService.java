@@ -71,12 +71,19 @@ public class DocumentIndexingService {
 
     private void indexGuides() {
         for (Guide guide : guidesFetcher.findAll()) {
-            LOG.info("indexing guide: {}", guide.slug());
-            for (Option option : guide.options()) {
-                guidesFetcher.findBySlugAndBuildAndLanguage(guide.slug(), option.buildTool(), option.language())
+            LOG.debug("indexing guide: {}", guide.slug());
+
+            // Prioritize Java language option, fallback to first option
+            Option selectedOption = guide.options().stream()
+                    .filter(option -> option.language() == Language.JAVA)
+                    .findFirst()
+                    .orElseGet(() -> guide.options().isEmpty() ? null : guide.options().getFirst());
+
+            if (selectedOption != null) {
+                guidesFetcher.findBySlugAndBuildAndLanguage(guide.slug(), selectedOption.buildTool(), selectedOption.language())
                         .ifPresent(html -> {
-                            String url = option.url();
-                            indexMicronautModule(guide.title(), guide.slug(), url, html, "guide", false);
+                            String url = guide.url();
+                            indexMicronautModule(guide.slug(), guide.title(), url, html, "guide", false);
                         });
             }
         }
@@ -99,8 +106,8 @@ public class DocumentIndexingService {
 
     private void indexMicronautModule(MicronautModule module) {
         try {
-            String htmlContent = client.latest(module.getSlug());
-            String url = "https://micronaut-projects.github.io/" + module.getSlug() + "/latest/guide/index.html";
+            String htmlContent = client.snapshot(module.getSlug());
+            String url = "https://micronaut-projects.github.io/" + module.getSlug() + "/snapshot/guide/index.html";
             indexMicronautModule(module.getTitle(), module.getSlug(), url, htmlContent, "module", true);
 
 //            htmlContent = client.configurationReference(document.getSlug());
@@ -119,19 +126,18 @@ public class DocumentIndexingService {
                                       String idPrefix,
                                       boolean splitSections) {
         try {
-            LOG.info("fetching HTML in {}", url);
+            LOG.debug("fetching HTML in {}", url);
             if (StringUtils.isNotEmpty(htmlContent)) {
                 org.jsoup.nodes.Document doc = Jsoup.parse(htmlContent);
                 final String baseUrl = url.split("#")[0];
 
                 String id = idPrefix + "-" + slug;
-                String moduleTitle = title;
                 // Find sections marked by <h1 id="...">
-                List<org.jsoup.nodes.Element> h1Elements = doc.select("h1[id]");
-                if (splitSections && !h1Elements.isEmpty()) {
-                    for (org.jsoup.nodes.Element h1 : h1Elements) {
-                        String anchorId = h1.id();
-                        String headingText = h1.text();
+                List<org.jsoup.nodes.Element> h2Elements = doc.select("h2[id]");
+                if (splitSections && !h2Elements.isEmpty()) {
+                    for (org.jsoup.nodes.Element h2 : h2Elements) {
+                        String anchorId = h2.id();
+                        String headingText = h2.text();
                         String sectionTitle = stripLeadingNumber(cleanText(headingText));
                         LOG.debug("# title: {}", sectionTitle);
                         id = idPrefix + "-" + slug + "-" + anchorId;
@@ -145,7 +151,7 @@ public class DocumentIndexingService {
 
                         String sectionUrl = baseUrl + "#" + anchorId;
 
-                        String sectionHtml = collectSectionHtml(h1);
+                        String sectionHtml = collectSectionHtml(h2);
                         String markdownContent = markdownConversion.toMarkdown(sectionHtml);
 //                        LOG.debug("=============");
 //                        LOG.debug(markdownContent);
@@ -153,7 +159,7 @@ public class DocumentIndexingService {
 
                         // Fallback: use container html if markdown came empty
                         if (markdownContent.isBlank()) {
-                            org.jsoup.nodes.Element container = h1.parent();
+                            org.jsoup.nodes.Element container = h2.parent();
                             if (container != null) {
                                 org.jsoup.nodes.Element clone = container.clone();
                                 clone.select("h1#" + anchorId).remove();
@@ -163,7 +169,7 @@ public class DocumentIndexingService {
 
                         // Build display title including module title when splitting sections
 
-                        String displayTitle = sectionTitle.isEmpty() ? moduleTitle : sectionTitle + (moduleTitle.isEmpty() ? "" : " | " + moduleTitle);
+                        String displayTitle = sectionTitle.isEmpty() ? title : sectionTitle;
                         if (!displayTitle.isEmpty() || !markdownContent.isEmpty()) {
                             IndexedDocument indexedDoc = new IndexedDocument(
                                 id,
@@ -188,7 +194,7 @@ public class DocumentIndexingService {
                     LOG.debug("Indexed document (MD): {}", url);
                 }
             } else {
-                LOG.info("could not fetch HTML in {}", url);
+                LOG.warn("could not fetch HTML in {}", url);
             }
         } catch (Exception e) {
             LOG.error("Error indexing document: {}", idPrefix + "-" + slug, e);
@@ -234,7 +240,7 @@ public class DocumentIndexingService {
                 );
 
                 var fallbackResponse = openSearchClient.index(fallbackRequest);
-                LOG.info("Successfully indexed simplified document: {} with result: {}", doc.id(), fallbackResponse.result());
+                LOG.debug("Successfully indexed simplified document: {} with result: {}", doc.id(), fallbackResponse.result());
             } catch (Exception fallbackError) {
                 LOG.error("Even simplified indexing failed for document: {}", doc.id(), fallbackError);
                 throw new IOException("Failed to index document: " + doc.id(), e);

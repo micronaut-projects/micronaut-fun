@@ -19,5 +19,13 @@ public interface MicronautProjectsGithubClient {
 
     @Consumes(MediaType.TEXT_HTML)
     @Get("/{slug}/latest/guide/configurationreference.html")
-    String configurationReference(@PathVariable String slug);
+    String latestConfigurationReference(@PathVariable String slug);
+
+    @Consumes(MediaType.TEXT_HTML)
+    @Get("/{slug}/snapshot/guide/index.html")
+    String snapshot(@PathVariable String slug);
+
+    @Consumes(MediaType.TEXT_HTML)
+    @Get("/{slug}/snapshot/guide/configurationreference.html")
+    String snapshotConfigurationReference(@PathVariable String slug);
 }

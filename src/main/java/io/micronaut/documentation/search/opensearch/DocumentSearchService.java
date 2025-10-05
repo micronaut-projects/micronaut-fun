@@ -35,7 +35,7 @@ public class DocumentSearchService implements SearchService {
 
     @Override
     public List<SearchResult> search(String query) {
-        return search(query, 10);
+        return search(query, 50);
     }
 
     public List<SearchResult> search(String query, int size) {
@@ -59,9 +59,23 @@ public class DocumentSearchService implements SearchService {
             .fuzziness("AUTO")
         )._toQuery();
 
+        // Boost micronaut-core results
+        Query prefixBoostQuery = Query.of(q -> q
+            .bool(b -> b
+                .must(multiMatchQuery)
+                .should(s -> s
+                    .prefix(p -> p
+                        .field("id")
+                        .value("module-micronaut-core")
+                        .boost(2.0f)
+                    )
+                )
+            )
+        );
+
         return SearchRequest.of(s -> s
             .index(INDEX_NAME)
-            .query(multiMatchQuery)
+            .query(prefixBoostQuery)
             .size(size)
             .highlight(h -> h
                 .fields("title", tf -> tf)
