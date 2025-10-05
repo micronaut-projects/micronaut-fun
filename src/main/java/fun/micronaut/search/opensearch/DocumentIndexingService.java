@@ -2,8 +2,8 @@ package fun.micronaut.search.opensearch;
 
 import io.micronaut.core.util.StringUtils;
 import fun.micronaut.search.docs.CoreDocsClient;
-import fun.micronaut.search.IndexedDocument;
-import fun.micronaut.search.MarkdownConversion;
+import fun.micronaut.search.search.IndexedDocument;
+import fun.micronaut.search.search.MarkdownConversion;
 import fun.micronaut.search.guides.*;
 import fun.micronaut.search.modules.MicronautModule;
 import fun.micronaut.search.docs.MicronautProjectsGithubClient;

@@ -1,4 +1,4 @@
-package fun.micronaut.search;
+package fun.micronaut.search.search;
 
 import io.micronaut.serde.annotation.Serdeable;
 

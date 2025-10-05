@@ -1,4 +1,4 @@
-package fun.micronaut.search;
+package fun.micronaut.search.search;
 
 import com.vladsch.flexmark.html2md.converter.FlexmarkHtmlConverter;
 import io.micronaut.core.annotation.NonNull;

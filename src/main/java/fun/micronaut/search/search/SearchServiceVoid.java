@@ -1,4 +1,4 @@
-package fun.micronaut.search;
+package fun.micronaut.search.search;
 
 import io.micronaut.context.annotation.Secondary;
 import jakarta.inject.Singleton;

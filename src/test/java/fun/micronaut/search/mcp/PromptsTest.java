@@ -1,6 +1,5 @@
 package fun.micronaut.search.mcp;
 
-import fun.micronaut.search.SearchResult;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.spec.McpSchema;

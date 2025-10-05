@@ -1,5 +1,6 @@
 package fun.micronaut.search;
 
+import fun.micronaut.search.search.SearchResult;
 import io.micronaut.context.BeanContext;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.type.Argument;

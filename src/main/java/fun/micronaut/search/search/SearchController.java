@@ -1,4 +1,4 @@
-package fun.micronaut.search;
+package fun.micronaut.search.search;
 
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
