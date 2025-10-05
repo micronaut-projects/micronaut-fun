@@ -48,16 +48,12 @@ class MicronautGuidesCompletions {
         if (completeRequest.argument() == null) {
             return EMPTY;
         }
-        if (completeRequest.argument().name().equals("slug")) {
-            return new McpSchema.CompleteResult(completeSlug(completeRequest.argument().value()));
-        }
-        if (completeRequest.argument().name().equals("buildTool")) {
-            return completeCompletion(findBuildToolsForSlug(completeRequest));
-        }
-        if (completeRequest.argument().name().equals("language")) {
-            return completeCompletion(findLanguagesForSlug(completeRequest));
-        }
-        return EMPTY;
+        return switch (completeRequest.argument().name()) {
+            case "slug" -> new McpSchema.CompleteResult(completeSlug(completeRequest.argument().value()));
+            case "buildTool" -> completeCompletion(findBuildToolsForSlug(completeRequest));
+            case "language" -> completeCompletion(findLanguagesForSlug(completeRequest));
+            default -> EMPTY;
+        };
     }
 
     private List<String> findLanguagesForSlug(McpSchema.CompleteRequest completeRequest) {

@@ -3,7 +3,6 @@ package io.micronaut.documentation.search.mcp;
 import io.micronaut.documentation.search.guides.BuildTool;
 import io.micronaut.documentation.search.guides.GuidesFetcher;
 import io.micronaut.documentation.search.guides.Language;
-import io.micronaut.json.JsonMapper;
 import io.micronaut.mcp.annotations.ResourceTemplate;
 import io.modelcontextprotocol.spec.McpError;
 import io.modelcontextprotocol.spec.McpSchema;
@@ -14,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
-class MicronautGuidesResourceTemplates {
+class MicronautResourceTemplates {
     private final GuidesFetcher guidesFetcher;
 
-    MicronautGuidesResourceTemplates(GuidesFetcher guidesFetcher) {
+    MicronautResourceTemplates(GuidesFetcher guidesFetcher) {
         this.guidesFetcher = guidesFetcher;
     }
 

@@ -10,10 +10,10 @@ import io.modelcontextprotocol.common.McpTransportContext;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class MicronautDocumentationSearchTool implements SearchTool {
+public class MicronautSearchTool implements SearchTool {
     private final SearchService searchService;
 
-    public MicronautDocumentationSearchTool(SearchService searchService) {
+    public MicronautSearchTool(SearchService searchService) {
         this.searchService = searchService;
     }
 

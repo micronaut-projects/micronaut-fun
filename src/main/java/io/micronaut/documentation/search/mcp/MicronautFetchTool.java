@@ -12,10 +12,10 @@ import jakarta.inject.Singleton;
 import java.util.Optional;
 
 @Singleton
-class MicronautDocumentationFetchTool implements FetchTool {
+class MicronautFetchTool implements FetchTool {
     private final SearchService searchService;
 
-    public MicronautDocumentationFetchTool(SearchService searchService) {
+    public MicronautFetchTool(SearchService searchService) {
         this.searchService = searchService;
     }
 
