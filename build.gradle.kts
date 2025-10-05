@@ -40,7 +40,7 @@ tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
     options.compilerArgs.add("-Amicronaut.jsonschema.baseUri=https://micronaut.fun/schemas")
 }
 application {
-    mainClass = "io.micronaut.documentation.search.Application"
+    mainClass = "fun.micronaut.search.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
