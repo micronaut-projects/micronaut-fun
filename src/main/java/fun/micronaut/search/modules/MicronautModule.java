@@ -4,9 +4,11 @@ import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.naming.Named;
+import io.micronaut.serde.annotation.Serdeable;
 
 @EachProperty("modules")
 @Introspected
+@Serdeable
 public class MicronautModule implements Named {
 
     private final String name;

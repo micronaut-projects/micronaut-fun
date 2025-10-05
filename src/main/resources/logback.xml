@@ -11,4 +11,5 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
+    <logger name="fun.micronaut.search.filters" level="TRACE"/>
 </configuration>

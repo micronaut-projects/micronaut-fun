@@ -3,6 +3,7 @@ package fun.micronaut.search.mcp;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.spec.McpSchema;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @MicronautTest
 class MicronautGuidesResourceTemplatesTest {
 
+    @Disabled("https://github.com/micronaut-projects/micronaut-mcp/pull/77")
     @Test
     void resourceCompletion(McpSyncClient client) {
         McpSchema.ReadResourceResult readResourceResult = assertDoesNotThrow(() -> client.readResource(new McpSchema.ReadResourceRequest("guidemetadata://micronaut-oauth2-auth0")));

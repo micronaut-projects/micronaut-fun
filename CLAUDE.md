@@ -22,6 +22,17 @@ This is a **Micronaut Documentation Search** application that provides:
 
 ## Development Commands
 
+### Local Development Setup
+
+Before running the app, start OpenSearch via Docker:
+```bash
+docker run -d --name micronautfunopensearch -p 9200:9200 -p 9600:9600 \
+  -e "discovery.type=single-node" \
+  -e "plugins.security.disabled=true" \
+  -e "OPENSEARCH_INITIAL_ADMIN_PASSWORD=DummyPassword#1233" \
+  opensearchproject/opensearch:2.19.3
+```
+
 ### Build and Run
 ```bash
 # Build the application
@@ -63,31 +74,43 @@ This is a **Micronaut Documentation Search** application that provides:
    - `IndexingController` - Document indexing endpoints
    - `OpenSearchHealthController` - Health checks
 
-3. **MCP Integration**
-   - `MicronautDocumentationSearchTool` - MCP search tool
-   - `MicronautDocumentationFetchTool` - MCP fetch tool
-   - Location: `src/main/java/io/micronaut/documentation/search/mcp/`
+3. **MCP Integration** (`src/main/java/io/micronaut/documentation/search/mcp/`)
+   - **Tools**: `MicronautDocumentationSearchTool`, `MicronautDocumentationFetchTool`, `MicronautGuidesTools`
+   - **Resource Templates**: `MicronautGuidesResourceTemplates` - Dynamic guide resources
+   - **Completions**: `MicronautGuidesCompletions` - Auto-completion support
+   - **Configuration**: `ConfigurationReferenceFactory` - Configuration reference generation
+   - **Prompts**: Configured in `application.properties` (introspection-testing, static-resources-testing, serdeable-testing, dev-default-environment)
 
 4. **Data Processing**
    - `DefaultMarkdownConversion` - HTML to Markdown conversion
    - `DefaultSummaryService` - Content summarization
    - `CoreDocsClient` - External documentation fetching
+   - `GuidesFetcher` - Fetches Micronaut guides
+   - `GuidesHttpClient` - HTTP client for guides API
 
 ### Configuration
 
-- **Main Class**: `io.micronaut.documentation.search.Application`
+- **Main Class**: `fun.micronaut.search.Application`
 - **Package**: `micronaut.documentation.search`
 - **OpenSearch**: Configured for localhost:9200
 - **MCP Server**: HTTP transport enabled
+- **HTTP Services**:
+  - `mnguides` → https://guides.micronaut.io
+  - `micronautdocs` → https://docs.micronaut.io
+  - `micronautprojects` → https://micronaut-projects.github.io
+- **Cache**: Caffeine cache configured for guides
+- **JSON Schema**: Enabled at `/schemas/**` path (base URI: https://micronaut.fun/schemas)
 
 ### Dependencies
 
 Key dependencies include:
 - `micronaut-opensearch` - OpenSearch integration
 - `micronaut-views-thymeleaf` - Template rendering
-- `micronaut-mcp-server-java-sdk` - MCP server capabilities
-- `jsoup` - HTML parsing
-- `flexmark-html2md-converter` - HTML to Markdown conversion
+- `micronaut-mcp-server-java-sdk:0.0.10` - MCP server capabilities
+- `micronaut-jsonschema` - JSON Schema support
+- `micronaut-cache-caffeine` - Caching
+- `jsoup:1.17.2` - HTML parsing
+- `flexmark-html2md-converter:0.64.8` - HTML to Markdown conversion
 
 ## Deployment
 

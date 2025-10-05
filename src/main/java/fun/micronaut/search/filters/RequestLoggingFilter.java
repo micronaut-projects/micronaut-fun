@@ -1,4 +1,4 @@
-package fun.micronaut.search;
+package fun.micronaut.search.filters;
 
 import io.micronaut.core.order.Ordered;
 import io.micronaut.http.HttpMethod;
@@ -20,6 +20,7 @@ class RequestLoggingFilter implements Ordered {
     private static final Logger LOG = LoggerFactory.getLogger(RequestLoggingFilter.class);
 
     @Override
+
     public int getOrder() {
         return ServerFilterPhase.TRACING.before();
     }
