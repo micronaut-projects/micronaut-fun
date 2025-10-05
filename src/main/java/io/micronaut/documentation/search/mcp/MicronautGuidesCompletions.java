@@ -1,10 +1,7 @@
 package io.micronaut.documentation.search.mcp;
 
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.documentation.search.guides.BuildTool;
-import io.micronaut.documentation.search.guides.Guide;
-import io.micronaut.documentation.search.guides.GuidesFetcher;
-import io.micronaut.documentation.search.guides.Language;
+import io.micronaut.documentation.search.guides.*;
 import io.micronaut.mcp.annotations.ResourceCompletion;
 import io.modelcontextprotocol.spec.McpSchema;
 import jakarta.inject.Singleton;
@@ -60,7 +57,7 @@ class MicronautGuidesCompletions {
         Optional<Guide> guideOptional = guide(completeRequest);
         if (guideOptional.isPresent()) {
             Guide guide = guideOptional.get();
-            return completionsForLanguages(guide.languages());
+            return completionsForLanguages(guide.options().stream().map(Option::language).toList());
         }
         return completions(Language.values());
     }
@@ -69,7 +66,7 @@ class MicronautGuidesCompletions {
         Optional<Guide> guideOptional = guide(completeRequest);
         if (guideOptional.isPresent()) {
             Guide guide = guideOptional.get();
-            return completions(guide.buildTools());
+            return completions(guide.options().stream().map(Option::buildTool).toList());
         }
         return completions(List.of(BuildTool.GRADLE, BuildTool.MAVEN));
     }

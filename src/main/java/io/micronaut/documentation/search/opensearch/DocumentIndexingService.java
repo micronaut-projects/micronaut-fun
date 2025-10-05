@@ -4,6 +4,7 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.documentation.search.docs.CoreDocsClient;
 import io.micronaut.documentation.search.IndexedDocument;
 import io.micronaut.documentation.search.MarkdownConversion;
+import io.micronaut.documentation.search.guides.*;
 import io.micronaut.documentation.search.modules.MicronautModule;
 import io.micronaut.documentation.search.docs.MicronautProjectsGithubClient;
 import jakarta.inject.Singleton;
@@ -32,17 +33,20 @@ public class DocumentIndexingService {
         "repository"
     );
 
+    private final GuidesFetcher guidesFetcher;
     private final CoreDocsClient coreDocsClient;
     private final MicronautProjectsGithubClient client;
     private final OpenSearchClient openSearchClient;
     private final List<MicronautModule> modules;
     private final MarkdownConversion markdownConversion;
 
-    public DocumentIndexingService(CoreDocsClient coreDocsClient,
+    public DocumentIndexingService(GuidesFetcher guidesFetcher,
+                                   CoreDocsClient coreDocsClient,
                                    MicronautProjectsGithubClient client,
                                    OpenSearchClient openSearchClient,
                                    List<MicronautModule> modules,
                                    MarkdownConversion markdownConversion) {
+        this.guidesFetcher = guidesFetcher;
         this.coreDocsClient = coreDocsClient;
         this.client = client;
         this.openSearchClient = openSearchClient;
@@ -58,17 +62,31 @@ public class DocumentIndexingService {
             return;
         }
 
+        indexGuides();
         indexCoreDocs();
         modules.forEach(this::indexMicronautModule);
 
         LOG.info("MicronautModule indexing process completed");
     }
 
+    private void indexGuides() {
+        for (Guide guide : guidesFetcher.findAll()) {
+            LOG.info("indexing guide: {}", guide.slug());
+            for (Option option : guide.options()) {
+                guidesFetcher.findBySlugAndBuildAndLanguage(guide.slug(), option.buildTool(), option.language())
+                        .ifPresent(html -> {
+                            String url = option.url();
+                            indexMicronautModule(guide.title(), guide.slug(), url, html, "guide", false);
+                        });
+            }
+        }
+    }
+
     private void indexCoreDocs() {
         try {
             String htmlContent = coreDocsClient.latest();
             String url = "https://docs.micronaut.io/latest/guide/index.html";
-            indexMicronautModule(null, url, htmlContent);
+            indexMicronautModule("Micronaut Core", "micronaut-core", url, htmlContent, "module", true);
 
 //            htmlContent = coreDocsClient.configurationReference();
 //            url = "https://docs.micronaut.io/latest/guide/configurationreference.html";
@@ -79,39 +97,44 @@ public class DocumentIndexingService {
         }
     }
 
-    private void indexMicronautModule(MicronautModule document) {
+    private void indexMicronautModule(MicronautModule module) {
         try {
-            String htmlContent = client.latest(document.getSlug());
-            String url = "https://micronaut-projects.github.io/" + document.getSlug() + "/latest/guide/index.html";
-            indexMicronautModule(document, url, htmlContent);
+            String htmlContent = client.latest(module.getSlug());
+            String url = "https://micronaut-projects.github.io/" + module.getSlug() + "/latest/guide/index.html";
+            indexMicronautModule(module.getTitle(), module.getSlug(), url, htmlContent, "module", true);
 
 //            htmlContent = client.configurationReference(document.getSlug());
 //            url = "https://micronaut-projects.github.io/" + document.getSlug() + "/latest/guide/configurationreference.html";
 //            indexMicronautModule(document, url, htmlContent);
 
         } catch (Exception e) {
-            LOG.error("Error indexing document: {}", document.getName(), e);
+            LOG.error("Error indexing document: {}", module.getName(), e);
         }
     }
 
-    private void indexMicronautModule(MicronautModule micronautModule, String url, String htmlContent) {
+    private void indexMicronautModule(String slug,
+                                      String title,
+                                      String url,
+                                      String htmlContent,
+                                      String idPrefix,
+                                      boolean splitSections) {
         try {
             LOG.info("fetching HTML in {}", url);
             if (StringUtils.isNotEmpty(htmlContent)) {
                 org.jsoup.nodes.Document doc = Jsoup.parse(htmlContent);
                 final String baseUrl = url.split("#")[0];
 
-                String id = (micronautModule == null ? micronautModule.getSlug() : "micronaut-core");
+                String id = idPrefix + "-" + slug;
+                String moduleTitle = title;
                 // Find sections marked by <h1 id="...">
                 List<org.jsoup.nodes.Element> h1Elements = doc.select("h1[id]");
-                String moduleTitle = cleanText(micronautModule != null ? micronautModule.getTitle() : "");
-                if (!h1Elements.isEmpty()) {
+                if (splitSections && !h1Elements.isEmpty()) {
                     for (org.jsoup.nodes.Element h1 : h1Elements) {
                         String anchorId = h1.id();
                         String headingText = h1.text();
                         String sectionTitle = stripLeadingNumber(cleanText(headingText));
                         LOG.debug("# title: {}", sectionTitle);
-                        id = (micronautModule != null ? micronautModule.getSlug() : "micronaut-core") + "-" + anchorId;
+                        id = idPrefix + "-" + slug + "-" + anchorId;
 
                         // Skip configured sections
                         String normalized = normalizeTitleKey(sectionTitle);
@@ -153,14 +176,8 @@ public class DocumentIndexingService {
                         }
                     }
                 } else {
-                    // Fallback: index the whole document as a single entry using Markdown
-                    String title = cleanText(doc.title());
-                    if (title != null && title.contains("Configuration Reference | Micronaut")) {
-                        title = title.replace("Micronaut", moduleTitle);
-                    }
                     String bodyHtml = doc.body() != null ? doc.body().html() : "";
                     String markdownContent = markdownConversion.toMarkdown(bodyHtml);
-
                     IndexedDocument indexedDoc = new IndexedDocument(
                         id,
                         title,
@@ -174,7 +191,7 @@ public class DocumentIndexingService {
                 LOG.info("could not fetch HTML in {}", url);
             }
         } catch (Exception e) {
-            LOG.error("Error indexing document: {}", (micronautModule != null ? micronautModule.getName() : ""), e);
+            LOG.error("Error indexing document: {}", idPrefix + "-" + slug, e);
         }
     }
 
