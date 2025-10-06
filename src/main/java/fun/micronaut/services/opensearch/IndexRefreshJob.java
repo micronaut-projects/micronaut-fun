@@ -1,4 +1,4 @@
-package fun.micronaut.search.opensearch;
+package fun.micronaut.services.opensearch;
 
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.scheduling.annotation.Scheduled;

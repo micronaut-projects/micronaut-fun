@@ -1,5 +1,6 @@
-package fun.micronaut.search.search;
+package fun.micronaut.services;
 
+import fun.micronaut.model.SearchResult;
 import io.micronaut.context.annotation.Secondary;
 import jakarta.inject.Singleton;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 @Secondary
 @Singleton
-public class SearchServiceVoid implements SearchService{
+class SearchServiceVoid implements SearchService {
     @Override
     public List<SearchResult> search(String query) {
         return Collections.emptyList();

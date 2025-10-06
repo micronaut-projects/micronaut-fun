@@ -1,4 +1,4 @@
-package fun.micronaut.search.opensearch;
+package fun.micronaut.services.opensearch;
 
 import io.micronaut.core.util.StringUtils;
 import fun.micronaut.search.docs.CoreDocsClient;

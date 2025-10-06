@@ -1,5 +1,8 @@
-package fun.micronaut.search.search;
+package fun.micronaut.controllers;
 
+import fun.micronaut.model.SearchResult;
+import fun.micronaut.services.SearchService;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.annotation.Controller;
@@ -26,8 +29,13 @@ public class SearchController {
     @Get("/")
     @View("search")
     public Map<String, Object> index(@Nullable @QueryValue String q) {
+        return searchModel(q);
+    }
+
+    @NonNull
+    Map<String, Object> searchModel(@Nullable String q) {
         Map<String, Object> model = new HashMap<>();
-        String query = q !=null ? q : "";
+        String query = q !=null  ? q : "";
         model.put(MODEL_KEY_QUERY, query);
         if (StringUtils.isNotEmpty(query)) {
             List<SearchResult> results = searchService.search(query);

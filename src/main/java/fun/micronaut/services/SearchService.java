@@ -1,5 +1,6 @@
-package fun.micronaut.search.search;
+package fun.micronaut.services;
 
+import fun.micronaut.model.SearchResult;
 import io.micronaut.core.annotation.NonNull;
 
 import java.util.List;

@@ -1,10 +1,10 @@
-package fun.micronaut.search.opensearch;
+package fun.micronaut.services.opensearch;
 
 import fun.micronaut.search.conf.SearchConfiguration;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
-import fun.micronaut.search.search.SearchResult;
-import fun.micronaut.search.search.SearchService;
+import fun.micronaut.model.SearchResult;
+import fun.micronaut.services.SearchService;
 import jakarta.inject.Singleton;
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.opensearch._types.query_dsl.MultiMatchQuery;
@@ -150,8 +150,7 @@ public class DocumentSearchService implements SearchService {
         try {
             var getResponse = openSearchClient.get(g -> g
                 .index(INDEX_NAME)
-                .id(id)
-            , Map.class);
+                .id(id), Map.class);
 
             if (getResponse == null || !getResponse.found()) {
                 return Optional.empty();

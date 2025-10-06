@@ -2,7 +2,7 @@ package fun.micronaut.search.mcp;
 
 import fun.micronaut.search.guides.Guides;
 import fun.micronaut.search.guides.GuidesFetcher;
-import fun.micronaut.search.modules.Modules;
+import fun.micronaut.model.Modules;
 import fun.micronaut.search.modules.ModulesFetcher;
 import io.micronaut.mcp.annotations.Tool;
 import jakarta.inject.Singleton;

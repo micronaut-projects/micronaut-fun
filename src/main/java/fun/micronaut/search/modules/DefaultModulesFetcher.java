@@ -1,5 +1,7 @@
 package fun.micronaut.search.modules;
 
+import fun.micronaut.mappers.MicronautModuleMapper;
+import fun.micronaut.model.Modules;
 import jakarta.inject.Singleton;
 
 import java.util.List;

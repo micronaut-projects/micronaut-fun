@@ -2,7 +2,7 @@ package fun.micronaut.search.mcp;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import fun.micronaut.search.search.SearchService;
+import fun.micronaut.services.SearchService;
 import io.micronaut.mcp.server.tools.fetch.FetchRequest;
 import io.micronaut.mcp.server.tools.fetch.FetchResponse;
 import io.micronaut.mcp.server.tools.fetch.FetchTool;

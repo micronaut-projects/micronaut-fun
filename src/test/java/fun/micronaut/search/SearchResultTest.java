@@ -1,6 +1,6 @@
 package fun.micronaut.search;
 
-import fun.micronaut.search.search.SearchResult;
+import fun.micronaut.model.SearchResult;
 import io.micronaut.context.BeanContext;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.type.Argument;
@@ -22,13 +22,13 @@ class SearchResultTest {
         assertDoesNotThrow(() -> BeanIntrospection.getIntrospection(SearchResult.class));
     }
 
-    //@Test
+    @Test
     void isDeserializable() {
         SerdeIntrospections introspections = assertDoesNotThrow(() -> beanContext.getBean(SerdeIntrospections.class));
         assertDoesNotThrow(() -> introspections.getDeserializableIntrospection(Argument.of(SearchResult.class)));
     }
 
-    //@Test
+    @Test
     void isSerializable() {
         SerdeIntrospections introspections = assertDoesNotThrow(() -> beanContext.getBean(SerdeIntrospections.class));
         assertDoesNotThrow(() -> introspections.getSerializableIntrospection(Argument.of(SearchResult.class)));
