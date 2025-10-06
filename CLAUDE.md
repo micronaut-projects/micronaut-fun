@@ -90,8 +90,8 @@ docker run -d --name micronautfunopensearch -p 9200:9200 -p 9600:9600 \
 
 ### Configuration
 
-- **Main Class**: `fun.micronaut.search.Application`
-- **Package**: `micronaut.documentation.search`
+- **Main Class**: `fun.micronaut.Application`
+- **Package**: `fun.micronaut`
 - **OpenSearch**: Configured for localhost:9200
 - **MCP Server**: HTTP transport enabled
 - **HTTP Services**:

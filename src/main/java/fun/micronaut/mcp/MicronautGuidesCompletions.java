@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 class MicronautGuidesCompletions {
     public static final int MAX = 100;
     private final GuidesFetcher guidesFetcher;
-    private static final McpSchema.CompleteResult EMPTY = new McpSchema.CompleteResult(
+    public static final McpSchema.CompleteResult EMPTY = new McpSchema.CompleteResult(
             new McpSchema.CompleteResult.CompleteCompletion(Collections.singletonList(" "), 1, false));
 
     MicronautGuidesCompletions(GuidesFetcher guidesFetcher) {

@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @MicronautTest
 class CompleteCompletionSerializationTest {
 
-    @Disabled("https://github.com/micronaut-projects/micronaut-mcp/pull/74")
     @Test
     void codeCompletionSerialization(JsonMapper jsonMapper) throws IOException {
         McpSchema.CompleteResult.CompleteCompletion codeComplete = new McpSchema.CompleteResult.CompleteCompletion(Collections.emptyList(), 0, false);

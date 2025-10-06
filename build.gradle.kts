@@ -25,8 +25,8 @@ dependencies {
     implementation("io.micronaut:micronaut-management")
     // HTML -> Markdown converter
     implementation("com.vladsch.flexmark:flexmark-html2md-converter:0.64.8")
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.10")
-    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.10")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.11")
+    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.11")
     annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:1.7.2")
     implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.2")
     implementation("io.micronaut.cache:micronaut-cache-caffeine")
@@ -38,7 +38,7 @@ tasks.withType<org.gradle.api.tasks.compile.JavaCompile>().configureEach {
     options.compilerArgs.add("-Amicronaut.jsonschema.baseUri=https://micronaut.fun/schemas")
 }
 application {
-    mainClass = "fun.micronaut.search.Application"
+    mainClass = "fun.micronaut.Application"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
