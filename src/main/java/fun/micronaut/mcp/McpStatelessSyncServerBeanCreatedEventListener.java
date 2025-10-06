@@ -1,56 +1,67 @@
 package fun.micronaut.mcp;
 
-import io.micronaut.context.annotation.EachBean;
-import io.micronaut.context.annotation.Factory;
 import fun.micronaut.conf.MicronautModule;
 import fun.micronaut.httpclients.CoreDocsClient;
 import fun.micronaut.httpclients.MicronautProjectsGithubClient;
+import io.micronaut.context.event.BeanCreatedEvent;
+import io.micronaut.context.event.BeanCreatedEventListener;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.MediaType;
 import io.modelcontextprotocol.server.McpStatelessServerFeatures;
+import io.modelcontextprotocol.server.McpStatelessSyncServer;
 import io.modelcontextprotocol.spec.McpSchema;
-import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
 import java.util.List;
 import java.util.function.Function;
 
-@Factory
-class MicronautFactory {
+@Singleton
+class McpStatelessSyncServerBeanCreatedEventListener
+        implements BeanCreatedEventListener<McpStatelessSyncServer> {
+    private final List<MicronautModule> modules;
+    private final CoreDocsClient coreDocsClient;
     private final MicronautProjectsGithubClient micronautProjectsGithubClient;
-
-    MicronautFactory(MicronautProjectsGithubClient micronautProjectsGithubClient) {
+    McpStatelessSyncServerBeanCreatedEventListener(List<MicronautModule> modules,
+                                                   CoreDocsClient coreDocsClient,
+                                                   MicronautProjectsGithubClient micronautProjectsGithubClient) {
+        this.modules = modules;
+        this.coreDocsClient = coreDocsClient;
         this.micronautProjectsGithubClient = micronautProjectsGithubClient;
     }
 
-    @Named("#{T(Math).random()}-configuration-reference")
-    @EachBean(MicronautModule.class)
-    @Singleton
+    @Override
+    public McpStatelessSyncServer onCreated(@NonNull BeanCreatedEvent<McpStatelessSyncServer> event) {
+        McpStatelessSyncServer server = event.getBean();
+        modules.sort((o1, o2) -> o1.getSlug().compareTo(o2.getSlug()));
+        for (MicronautModule module : modules) {
+            server.addResource(configurationReferenceResourceSpecification(module));
+            server.addResource(moduleResourceSpecification(module));
+        }
+        server.addResource(coreResourceSpecification());
+        server.addResource(coreReferenceResourceSpecification());
+        return server;
+    }
+
     McpStatelessServerFeatures.SyncResourceSpecification configurationReferenceResourceSpecification(MicronautModule module) {
         return new McpStatelessServerFeatures.SyncResourceSpecification(configurationReferenceResource(module),
                 (mcpTransportContext, readResourceRequest) ->
                         configurationReferenceReadResourceResult(module.getSlug(), micronautProjectsGithubClient::snapshotConfigurationReference));
     }
 
-    @Singleton
-    @Named("micronaut-core-reference-specification")
-    McpStatelessServerFeatures.SyncResourceSpecification coreReferenceResourceSpecification(CoreDocsClient coreDocsClient) {
-        final String slug = "micronaut-core";
-        return new McpStatelessServerFeatures.SyncResourceSpecification(configurationReferenceResource("Micronaut Core", slug),
-                    (mcpTransportContext, readResourceRequest) ->
-                            configurationReferenceReadResourceResult(slug, s -> coreDocsClient.latestConfigurationReference()));
-    }
-
-    @EachBean(MicronautModule.class)
-    @Singleton
     McpStatelessServerFeatures.SyncResourceSpecification moduleResourceSpecification(MicronautModule micronautModule) {
         return new McpStatelessServerFeatures.SyncResourceSpecification(moduleResource(micronautModule),
                 (mcpTransportContext, readResourceRequest) ->
-                    moduleReadResourceResult(micronautModule.getSlug(), micronautProjectsGithubClient::latest));
+                        moduleReadResourceResult(micronautModule.getSlug(), micronautProjectsGithubClient::latest));
     }
 
-    @Singleton
-    @Named("micronaut-core")
-    McpStatelessServerFeatures.SyncResourceSpecification coreResourceSpecification(CoreDocsClient coreDocsClient) {
+    McpStatelessServerFeatures.SyncResourceSpecification coreReferenceResourceSpecification() {
+        final String slug = "micronaut-core";
+        return new McpStatelessServerFeatures.SyncResourceSpecification(configurationReferenceResource("Micronaut Core", slug),
+                (mcpTransportContext, readResourceRequest) ->
+                        configurationReferenceReadResourceResult(slug, s -> coreDocsClient.latestConfigurationReference()));
+    }
+
+    McpStatelessServerFeatures.SyncResourceSpecification coreResourceSpecification() {
         final String slug = "micronaut-core";
         return new McpStatelessServerFeatures.SyncResourceSpecification(moduleResource("Micronaut Core", slug),
                 (mcpTransportContext, readResourceRequest) ->
