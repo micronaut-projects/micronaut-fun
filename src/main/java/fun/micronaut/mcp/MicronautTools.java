@@ -18,13 +18,15 @@ class MicronautTools {
     }
 
     @Tool(title = "Micronaut Guides Listing",
-            description = "Obtains a listing of Micronaut Guides. For each guide, a title, description, slug, and URI are returned. The URI is the URI of an MCP Resource of this server which can be used to obtain more metadata about the guide")
+            description = "Obtains a listing of Micronaut Guides. For each guide, a title, description, slug, and URI are returned. The URI is the URI of an MCP Resource of this server which can be used to obtain more metadata about the guide",
+    annotations = @Tool.ToolAnnotations(readOnlyHint = true, destructiveHint = false, title = "Micronaut Guides Listing"))
     Guides guides() {
         return guidesFetcher.findGuides();
     }
 
     @Tool(title = "Micronaut Modules Listing",
-            description = "Obtains a listing of Micronaut Modules. For each module you get title, description, slug, and configuration reference URI. The URI is the URI of an MCP Resource of this server which can be used to obtain the configuration reference of the module")
+            description = "Obtains a listing of Micronaut Modules. For each module you get title, description, slug, and configuration reference URI. The URI is the URI of an MCP Resource of this server which can be used to obtain the configuration reference of the module",
+            annotations = @Tool.ToolAnnotations(readOnlyHint = true, destructiveHint = false, title = "Micronaut Modules Listing"))
     Modules modules() {
         return modulesFetcher.modules();
     }
