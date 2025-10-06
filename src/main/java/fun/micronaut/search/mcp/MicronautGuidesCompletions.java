@@ -14,7 +14,7 @@ class MicronautGuidesCompletions {
     public static final int MAX = 100;
     private final GuidesFetcher guidesFetcher;
     private static final McpSchema.CompleteResult EMPTY = new McpSchema.CompleteResult(
-            new McpSchema.CompleteResult.CompleteCompletion(List.of(" "), 0, false));
+            new McpSchema.CompleteResult.CompleteCompletion(Collections.emptyList(), 0, false));
 
     MicronautGuidesCompletions(GuidesFetcher guidesFetcher) {
         this.guidesFetcher = guidesFetcher;
@@ -105,3 +105,4 @@ class MicronautGuidesCompletions {
         return new McpSchema.CompleteResult(new McpSchema.CompleteResult.CompleteCompletion(values, values.size(), false));
     }
 }
+
