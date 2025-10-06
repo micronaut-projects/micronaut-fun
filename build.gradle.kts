@@ -16,7 +16,6 @@ dependencies {
 
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
-    //implementation("io.micronaut:micronaut-jackson-databind")
 
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
     implementation("io.micronaut.opensearch:micronaut-opensearch")
