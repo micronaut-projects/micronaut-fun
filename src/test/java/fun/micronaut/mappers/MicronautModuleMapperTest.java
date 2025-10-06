@@ -1,7 +1,7 @@
 package fun.micronaut.mappers;
 
 import fun.micronaut.model.MicronautModuleListing;
-import fun.micronaut.search.modules.MicronautModule;
+import fun.micronaut.conf.MicronautModule;
 import io.micronaut.context.BeanContext;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;

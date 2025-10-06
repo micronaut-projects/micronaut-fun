@@ -1,5 +1,7 @@
 package fun.micronaut.search.guides;
 
+import fun.micronaut.model.Guide;
+import fun.micronaut.model.GuidesHttpClient;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 

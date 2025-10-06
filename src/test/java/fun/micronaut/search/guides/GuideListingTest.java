@@ -1,5 +1,6 @@
 package fun.micronaut.search.guides;
 
+import fun.micronaut.model.GuideListing;
 import io.micronaut.context.BeanContext;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;

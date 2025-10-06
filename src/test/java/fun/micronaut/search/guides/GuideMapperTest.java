@@ -1,5 +1,9 @@
 package fun.micronaut.search.guides;
 
+import fun.micronaut.mappers.GuideMapper;
+import fun.micronaut.model.Guide;
+import fun.micronaut.model.GuideListing;
+import fun.micronaut.services.GuidesFetcher;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;
 

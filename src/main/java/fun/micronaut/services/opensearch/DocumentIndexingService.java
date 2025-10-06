@@ -1,12 +1,14 @@
 package fun.micronaut.services.opensearch;
 
+import fun.micronaut.model.Guide;
+import fun.micronaut.model.Language;
+import fun.micronaut.model.Option;
+import fun.micronaut.services.GuidesFetcher;
 import io.micronaut.core.util.StringUtils;
-import fun.micronaut.search.docs.CoreDocsClient;
-import fun.micronaut.search.search.IndexedDocument;
+import fun.micronaut.httpclients.CoreDocsClient;
 import fun.micronaut.services.MarkdownConversionService;
-import fun.micronaut.search.guides.*;
-import fun.micronaut.search.modules.MicronautModule;
-import fun.micronaut.search.docs.MicronautProjectsGithubClient;
+import fun.micronaut.conf.MicronautModule;
+import fun.micronaut.httpclients.MicronautProjectsGithubClient;
 import jakarta.inject.Singleton;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package fun.micronaut.services.opensearch;
 
-import fun.micronaut.search.conf.SearchConfiguration;
+import fun.micronaut.conf.SearchConfiguration;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 import fun.micronaut.model.SearchResult;
