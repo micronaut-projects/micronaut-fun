@@ -3,7 +3,7 @@ package fun.micronaut.search.opensearch;
 import io.micronaut.core.util.StringUtils;
 import fun.micronaut.search.docs.CoreDocsClient;
 import fun.micronaut.search.search.IndexedDocument;
-import fun.micronaut.search.search.MarkdownConversion;
+import fun.micronaut.search.search.MarkdownConversionService;
 import fun.micronaut.search.guides.*;
 import fun.micronaut.search.modules.MicronautModule;
 import fun.micronaut.search.docs.MicronautProjectsGithubClient;
@@ -38,20 +38,20 @@ public class DocumentIndexingService {
     private final MicronautProjectsGithubClient client;
     private final OpenSearchClient openSearchClient;
     private final List<MicronautModule> modules;
-    private final MarkdownConversion markdownConversion;
+    private final MarkdownConversionService markdownConversionService;
 
     public DocumentIndexingService(GuidesFetcher guidesFetcher,
                                    CoreDocsClient coreDocsClient,
                                    MicronautProjectsGithubClient client,
                                    OpenSearchClient openSearchClient,
                                    List<MicronautModule> modules,
-                                   MarkdownConversion markdownConversion) {
+                                   MarkdownConversionService markdownConversionService) {
         this.guidesFetcher = guidesFetcher;
         this.coreDocsClient = coreDocsClient;
         this.client = client;
         this.openSearchClient = openSearchClient;
         this.modules = modules;
-        this.markdownConversion = markdownConversion;
+        this.markdownConversionService = markdownConversionService;
     }
 
     public void indexAllDocuments() {
@@ -152,7 +152,7 @@ public class DocumentIndexingService {
                         String sectionUrl = baseUrl + "#" + anchorId;
 
                         String sectionHtml = collectSectionHtml(h2);
-                        String markdownContent = markdownConversion.toMarkdown(sectionHtml);
+                        String markdownContent = markdownConversionService.toMarkdown(sectionHtml);
 //                        LOG.debug("=============");
 //                        LOG.debug(markdownContent);
 
@@ -163,7 +163,7 @@ public class DocumentIndexingService {
                             if (container != null) {
                                 org.jsoup.nodes.Element clone = container.clone();
                                 clone.select("h1#" + anchorId).remove();
-                                markdownContent = markdownConversion.toMarkdown(clone.html());
+                                markdownContent = markdownConversionService.toMarkdown(clone.html());
                             }
                         }
 
@@ -183,7 +183,7 @@ public class DocumentIndexingService {
                     }
                 } else {
                     String bodyHtml = doc.body() != null ? doc.body().html() : "";
-                    String markdownContent = markdownConversion.toMarkdown(bodyHtml);
+                    String markdownContent = markdownConversionService.toMarkdown(bodyHtml);
                     IndexedDocument indexedDoc = new IndexedDocument(
                         id,
                         title,
