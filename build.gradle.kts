@@ -25,8 +25,8 @@ dependencies {
     implementation("io.micronaut:micronaut-management")
     // HTML -> Markdown converter
     implementation("com.vladsch.flexmark:flexmark-html2md-converter:0.64.8")
-    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.11")
-    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.11")
+    implementation("io.micronaut.mcp:micronaut-mcp-server-java-sdk:0.0.12")
+    testImplementation("io.micronaut.mcp:micronaut-mcp-client-java-sdk:0.0.12")
     annotationProcessor("io.micronaut.jsonschema:micronaut-json-schema-processor:1.7.2")
     implementation("io.micronaut.jsonschema:micronaut-json-schema-annotations:1.7.2")
     implementation("io.micronaut.cache:micronaut-cache-caffeine")

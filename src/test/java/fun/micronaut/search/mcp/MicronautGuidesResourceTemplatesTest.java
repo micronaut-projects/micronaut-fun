@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @MicronautTest
 class MicronautGuidesResourceTemplatesTest {
 
-    @Disabled("https://github.com/micronaut-projects/micronaut-mcp/pull/77")
     @Test
     void resourceCompletion(McpSyncClient client) {
         McpSchema.ReadResourceResult readResourceResult = assertDoesNotThrow(() -> client.readResource(new McpSchema.ReadResourceRequest("guidemetadata://micronaut-oauth2-auth0")));
