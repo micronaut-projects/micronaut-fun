@@ -1,4 +1,4 @@
-package fun.micronaut.search;
+package fun.micronaut;
 
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextConfigurer;

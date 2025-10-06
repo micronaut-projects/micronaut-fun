@@ -1,4 +1,4 @@
-package fun.micronaut.search.search;
+package fun.micronaut.services;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import org.junit.jupiter.api.Test;

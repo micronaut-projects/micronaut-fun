@@ -1,8 +1,7 @@
-package fun.micronaut.search.search;
+package fun.micronaut.services;
 
 import com.vladsch.flexmark.html2md.converter.FlexmarkHtmlConverter;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotBlank;
 
