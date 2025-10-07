@@ -3,7 +3,6 @@
 [https://micronaut.fun](https://micronaut.fun)
 
 Micronaut Fun is a web application built with [Micronaut](https://micronaut.io/) and [OpenSearch](https://opensearch.org/). It provides a search engine for [Micronaut documentation](https://docs.micronaut.io) and [Micronaut Guides](https://guides.micronaut.io).
-
 The application is deployed via [Kamal](https://kamal-deploy.org) to an [Oracle Cloud](https://cloud.oracle.com) compute instance.
 
 ## MCP Server
