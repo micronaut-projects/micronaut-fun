@@ -12,6 +12,7 @@ The application exposes an [MCP Server](https://modelcontextprotocol.io) at `htt
 
 You can install it with: 
 
+- [cline](docs/cline.mds)
 - [Claude Destkop](/docs/claude-desktop.md)
 - [Claude Code](/docs/claude-code.md)
 - [VS Code](/docs/vs-code.md)
