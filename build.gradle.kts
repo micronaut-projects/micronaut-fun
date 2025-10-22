@@ -1,3 +1,5 @@
+import io.micronaut.gradle.docker.MicronautDockerfile
+
 plugins {
     id("io.micronaut.application") version "4.6.0"
     id("com.gradleup.shadow") version "9.2.2"
@@ -56,8 +58,9 @@ micronaut {
         annotations("micronaut.documentation.search.*")
     }
 }
-
-
+tasks.named<MicronautDockerfile>("dockerfile") {
+    baseImage.set("eclipse-temurin:25-jre")
+}
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
     jdkVersion = "21"
 }
