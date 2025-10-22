@@ -20,7 +20,7 @@ dependencies {
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
     implementation("io.micronaut.opensearch:micronaut-opensearch")
     implementation("org.apache.httpcomponents.client5:httpclient5")
-    implementation("org.jsoup:jsoup:1.17.2")
+    implementation("org.jsoup:jsoup:1.21.2")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-management")
     // HTML -> Markdown converter
