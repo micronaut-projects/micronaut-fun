@@ -1,7 +1,7 @@
 import io.micronaut.gradle.docker.MicronautDockerfile
 
 plugins {
-    id("io.micronaut.application") version "4.6.0"
+    id("io.micronaut.application") version "4.6.1"
     id("com.gradleup.shadow") version "9.2.2"
 }
 
