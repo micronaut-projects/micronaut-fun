@@ -24,4 +24,13 @@ class McpPromptsTest {
         assertTrue(((McpSchema.TextContent) prompt.messages().get(0).content()).text().contains("org.jspecify:jspecify"));
     }
 
+    @Test
+    void manyToManyPrompt(McpSyncClient mcpClient) {
+        McpSchema.GetPromptResult prompt =
+                assertDoesNotThrow(() -> mcpClient.getPrompt(new McpSchema.GetPromptRequest("many-to-many-micronaut-data-jdbc", Collections.emptyMap())));
+        assertTrue(CollectionUtils.isNotEmpty(prompt.messages()));
+        assertInstanceOf(McpSchema.TextContent.class, prompt.messages().get(0).content());
+        assertTrue(((McpSchema.TextContent) prompt.messages().get(0).content()).text().contains("Many-to-Many relationship"));
+    }
+
 }
