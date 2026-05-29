@@ -62,5 +62,5 @@ tasks.named<MicronautDockerfile>("dockerfile") {
     baseImage.set("eclipse-temurin:25-jre")
 }
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion = "21"
+    jdkVersion = "25"
 }
