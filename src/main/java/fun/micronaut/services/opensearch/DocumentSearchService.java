@@ -7,7 +7,6 @@ import fun.micronaut.model.SearchResult;
 import fun.micronaut.services.SearchService;
 import jakarta.inject.Singleton;
 import org.opensearch.client.opensearch.OpenSearchClient;
-import org.opensearch.client.opensearch._types.query_dsl.MultiMatchQuery;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
 import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.SearchResponse;
@@ -55,13 +54,15 @@ public class DocumentSearchService implements SearchService {
     }
 
     private SearchRequest buildSearchRequest(String query, int size) {
-        Query multiMatchQuery = MultiMatchQuery.of(m -> m
-            .query(query)
-            // Much higher boost for title to prioritize title matches over content matches
-            .fields("title^10.0", "content^1.0")
-            .type(org.opensearch.client.opensearch._types.query_dsl.TextQueryType.BestFields)
-            .fuzziness("AUTO")
-        )._toQuery();
+        Query multiMatchQuery = Query.of(q -> q
+            .multiMatch(m -> m
+                .query(query)
+                // Much higher boost for title to prioritize title matches over content matches
+                .fields("title^10.0", "content^1.0")
+                .type(org.opensearch.client.opensearch._types.query_dsl.TextQueryType.BestFields)
+                .fuzziness("AUTO")
+            )
+        );
 
         // Boost micronaut-core results
         Query prefixBoostQuery = Query.of(q -> q

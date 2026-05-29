@@ -78,8 +78,8 @@ public class StartupIndexingService implements ApplicationEventListener<Applicat
         CreateIndexRequest createIndexRequest = CreateIndexRequest.of(c -> c
             .index(INDEX_NAME)
             .settings(s -> s
-                .numberOfShards("1")
-                .numberOfReplicas("0")
+                .numberOfShards(1)
+                .numberOfReplicas(0)
                 .analysis(a -> a
                     .analyzer("html_analyzer", an -> an
                         .custom(ca -> ca
