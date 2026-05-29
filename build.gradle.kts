@@ -55,7 +55,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("micronaut.documentation.search.*")
+        annotations("fun.micronaut.*")
     }
 }
 tasks.named<MicronautDockerfile>("dockerfile") {
